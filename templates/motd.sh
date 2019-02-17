@@ -36,18 +36,6 @@ LOAD_5=`cat /proc/loadavg | awk '{print $2}'`
 LOAD_15=`cat /proc/loadavg | awk '{print $3}'`
 SWAP_USED=`free -m | tail -n 1 | awk '{print $3" MB"}'`
 
-# Interfaces info
-PRIVATE_INTERFACE="{{ PRIVATE_INTERFACE }}"
-PUBLIC_INTERFACE="{{ PUBLIC_INTERFACE }}"
-
-if [ ! "x$PUBLIC_INTERFACE" == "x" ]; then
-  PUBLIC_IP=`sudo ifconfig $PUBLIC_INTERFACE | grep "inet " | awk '{print $2" / "$4}'`
-fi
-
-if [ ! "x$PRIVATE_INTERFACE" == "x" ]; then
-  PRIVATE_IP=`sudo ifconfig $PRIVATE_INTERFACE | grep "inet " | awk '{print $2" / "$4}'`
-fi
-
 # Disk over threshold
 DISK_OT=`df -P | awk '0+$5 >= '$DISK_WARN_THRESHOLD' {print}'`
 
@@ -57,10 +45,8 @@ echo
 echo -e "Running on ${RELEASE}with kernel ${KERNEL}"
 echo
 
-echo -e " ${COLOR_ACCENT}█${COLOR_RESET} System date.........: $DATE"
-echo -e " ${COLOR_ACCENT}█${COLOR_RESET} Uptime..............: $UPTIME"
-echo -e " ${COLOR_ACCENT}█${COLOR_RESET} CPU usage...........: $LOAD_1, $LOAD_5, $LOAD_15"
-echo -e " ${COLOR_ACCENT}█${COLOR_RESET} Memory used.........: $MEMORY_USED / $MEMORY_TOTAL"
-echo -e " ${COLOR_ACCENT}█${COLOR_RESET} Swap in use.........: $SWAP_USED"
-echo -e " ${COLOR_ACCENT}█${COLOR_RESET} Private IP..........: $PRIVATE_IP"
-echo -e " ${COLOR_ACCENT}█${COLOR_RESET} Public IP...........: $PUBLIC_IP"
+echo -e "System date.........: $DATE"
+echo -e "Uptime..............: $UPTIME"
+echo -e "CPU usage...........: $LOAD_1, $LOAD_5, $LOAD_15"
+echo -e "Memory used.........: $MEMORY_USED / $MEMORY_TOTAL"
+echo -e "Swap in use.........: $SWAP_USED"
