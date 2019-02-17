@@ -1,0 +1,26 @@
+---
+- name: Install the prerequisite packages for the MOTD scripts.
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - lsb-release
+
+- name: Template motd file.
+  template:
+    src: motd.sh
+    dest: /etc/profile.d/motd.sh
+    mode: 0755
+    owner: root
+    group: root
+
+- name: Disable default login message.
+  file:
+    path: /home/{{ item }}/.hushlogin
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: 0755
+    state: touch
+  loop: '{{ vault_standard_users }}'
+  register: touch_log
+  changed_when: touch_log.diff.before.state != "file"
