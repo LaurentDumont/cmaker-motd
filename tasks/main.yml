@@ -21,6 +21,8 @@
     group: "{{ item }}"
     mode: 0755
     state: touch
+    access_time: preserve
+    modification_time: preserve
   loop: '{{ vault_standard_users }}'
   #register: touch_log
   #changed_when: touch_log.diff.before.state != "file"
